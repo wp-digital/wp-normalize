@@ -1,0 +1,13 @@
+{
+  "name": "innocode-digital/wp-normalize",
+  "version": "1.0.0",
+  "type": "library",
+  "license": "MIT",
+  "require": {},
+  "description": "Library for disabling probably unnecessary WordPress features.",
+  "autoload": {
+    "files": [
+      "src/normalize.php"
+    ]
+  }
+}
