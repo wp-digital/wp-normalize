@@ -143,21 +143,3 @@ function check_browser_js_support() {
 }
 
 add_action( 'wp_head', __NAMESPACE__ . '\check_browser_js_support', 1 );
-
-/**
- * @TODO: move to Users plugin
- *
- * @param string $url
- * @param string $path
- * @param string $scheme
- * @return string
- */
-function network_site_url( $url, $path, $scheme ) {
-    if ( is_super_admin() ) {
-        return $url;
-    }
-
-    return site_url( $path, $scheme );
-}
-
-add_filter( 'network_site_url', __NAMESPACE__ . '\network_site_url', 1, 3 );
