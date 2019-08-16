@@ -94,7 +94,7 @@ function disable_login_page_default_ui( array $classes ) {
 add_filter( 'login_body_class', __NAMESPACE__ . '\disable_login_page_default_ui', 1 );
 
 function add_theme_supports() {
-    add_theme_support( 'post-thumbnails', [ 'post', 'page' ] );
+    add_theme_support( 'post-thumbnails' );
     add_theme_support( 'html5', [
         'search-form',
         'comment-form',
@@ -104,6 +104,8 @@ function add_theme_supports() {
     ] );
     add_theme_support( 'title-tag' );
     add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'editor-styles' );
 }
 
 add_action( 'after_setup_theme', __NAMESPACE__ . '\add_theme_supports', 1 );
@@ -112,8 +114,6 @@ function clear_head() {
     remove_action( 'wp_head', 'wp_generator' );
     remove_action( 'wp_head', 'wlwmanifest_link' );
     remove_action( 'wp_head', 'rsd_link' );
-    remove_action( 'wp_head', 'rest_output_link_wp_head' );
-    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
     remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 }
 
@@ -121,7 +121,6 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\clear_head', 1 );
 
 function remove_headers() {
     remove_action( 'template_redirect', 'wp_shortlink_header', 11, 0 );
-    remove_action( 'template_redirect', 'rest_output_link_header', 11, 0 );
 }
 
 add_action( 'after_setup_theme', __NAMESPACE__ . '\remove_headers', 1 );
