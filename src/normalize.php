@@ -2,8 +2,6 @@
 
 namespace Innocode\WPNormalize;
 
-defined( 'ABSPATH' ) || exit;
-
 function remove_custom_fields_support() {
     foreach ( get_post_types() as $post_type ) {
         remove_post_type_support( $post_type, 'custom-fields' );
