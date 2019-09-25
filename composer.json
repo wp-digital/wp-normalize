@@ -1,7 +1,7 @@
 {
   "name": "innocode-digital/wp-normalize",
   "version": "1.2.0",
-  "type": "wordpress-mu-plugin",
+  "type": "wordpress-muplugin",
   "license": "GPL-2.0+",
   "require": {
     "composer/installers": "~1.0"
