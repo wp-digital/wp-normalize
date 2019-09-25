@@ -1,15 +1,10 @@
 {
   "name": "innocode-digital/wp-normalize",
   "version": "1.2.0",
-  "type": "wordpress-plugin",
+  "type": "wordpress-mu-plugin",
   "license": "GPL-2.0+",
   "require": {
     "composer/installers": "~1.0"
   },
-  "description": "Disable probably unnecessary WordPress features.",
-  "autoload": {
-    "files": [
-      "src/normalize.php"
-    ]
-  }
+  "description": "Disable probably unnecessary WordPress features."
 }
