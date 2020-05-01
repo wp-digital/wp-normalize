@@ -142,3 +142,21 @@ function check_browser_js_support() {
 }
 
 add_action( 'wp_head', __NAMESPACE__ . '\check_browser_js_support', 1 );
+
+/**
+ * @return string
+ */
+function login_header_url() {
+    return home_url( '/' );
+}
+
+add_filter( 'login_headerurl', __NAMESPACE__ . '\login_header_url' );
+
+/**
+ * @return string
+ */
+function login_header_text() {
+    return get_bloginfo( 'name' );
+}
+
+add_filter( 'login_headertext', __NAMESPACE__ . '\login_header_text' );
