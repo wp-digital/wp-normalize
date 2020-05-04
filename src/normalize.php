@@ -120,7 +120,7 @@ function clear_head() {
 add_action( 'after_setup_theme', __NAMESPACE__ . '\clear_head', 1 );
 
 function remove_headers() {
-    remove_action( 'template_redirect', 'wp_shortlink_header', 11, 0 );
+    remove_action( 'template_redirect', 'wp_shortlink_header', 11 );
 }
 
 add_action( 'after_setup_theme', __NAMESPACE__ . '\remove_headers', 1 );
