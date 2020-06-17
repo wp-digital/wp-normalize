@@ -96,11 +96,13 @@ add_filter( 'login_body_class', __NAMESPACE__ . '\disable_login_page_default_ui'
 function add_theme_supports() {
     add_theme_support( 'post-thumbnails' );
     add_theme_support( 'html5', [
-        'search-form',
-        'comment-form',
         'comment-list',
+        'comment-form',
+        'search-form',
         'gallery',
         'caption',
+        'style',
+        'script',
     ] );
     add_theme_support( 'title-tag' );
     add_theme_support( 'responsive-embeds' );
