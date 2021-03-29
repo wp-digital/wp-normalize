@@ -235,3 +235,15 @@ function enqueue_block_editor_assets() {
 }
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );
+
+remove_action( 'admin_init', '_maybe_update_core' );
+
+add_filter( 'pre_site_transient_update_plugins', '__return_null', 1 );
+
+remove_action( 'load-plugins.php', 'wp_update_plugins' );
+remove_action( 'admin_init', '_maybe_update_plugins' );
+
+add_filter( 'pre_site_transient_update_themes', '__return_null', 1 );
+
+remove_action( 'load-themes.php', 'wp_update_themes' );
+remove_action( 'admin_init', '_maybe_update_themes' );
