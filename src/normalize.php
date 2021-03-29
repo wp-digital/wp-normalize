@@ -162,3 +162,76 @@ function login_header_text() {
 }
 
 add_filter( 'login_headertext', __NAMESPACE__ . '\login_header_text' );
+
+/**
+ * @return string[]
+ */
+function allowed_block_types() {
+    return [
+        'core/paragraph',
+        'core/image',
+        'core/heading',
+        'core/list',
+        'core/quote',
+        'core/shortcode',
+        'core/button',
+        'core/buttons',
+        'core/columns',
+        'core/column',
+        'core/embed',
+        'core/file',
+        'core/group',
+        'core/media-text',
+        'core/missing',
+        'core/more',
+        'core/preformatted',
+        'core/pullquote',
+        'core/separator',
+        'core/block',
+        'core/social-links',
+        'core/social-link',
+        'core/spacer',
+        'core/subhead',
+        'core/table',
+        'core/text-columns',
+        'core/video',
+    ];
+}
+
+add_filter( 'allowed_block_types', __NAMESPACE__ . '\allowed_block_types' );
+
+function enqueue_block_editor_assets() {
+    // Domain mapping processes mu-plugins directory wrong.
+    $has_domain_mapping = remove_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
+
+    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+    $script_url = plugins_url( "public/js/blocks$suffix.js", INNOCODE_NORMALIZE_FILE );
+
+    if ( $has_domain_mapping ) {
+        add_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
+    }
+
+    wp_enqueue_script(
+        'innocode-normalize-blocks',
+        $script_url,
+        [ 'wp-edit-post' ],
+        INNOCODE_NORMALIZE_VERSION,
+        true
+    );
+
+    $allowed_embed_variations = apply_filters( 'innocode_normalize_allowed_embed_block_variations', [
+        'youtube',
+        'vimeo',
+    ] );
+
+    wp_add_inline_script(
+        'innocode-normalize-blocks',
+        sprintf(
+            'var innocodeNormalizeAllowedEmbedBlockVariations = %s;',
+            json_encode( $allowed_embed_variations )
+        ),
+        'before'
+    );
+}
+
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_block_editor_assets' );

@@ -1,9 +1,10 @@
 {
   "name": "innocode-digital/wp-normalize",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "type": "wordpress-muplugin",
   "license": "GPL-2.0+",
   "require": {
+    "ext-json": "*",
     "composer/installers": "~1.0"
   },
   "description": "Disables probably unnecessary WordPress features, and a little changes behaviour."
