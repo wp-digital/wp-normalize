@@ -39,7 +39,7 @@ add_action( 'wp_dashboard_setup', __NAMESPACE__ . '\remove_dashboard_widgets', 1
  * @param string $post_type
  * @return array
  */
-function post_type_defaults( array $args, $post_type ) {
+function post_type_defaults( array $args, string $post_type ) : array {
     if ( $post_type == 'post' ) {
         $args['show_in_nav_menus'] = false;
     }
@@ -54,7 +54,7 @@ add_filter( 'register_post_type_args', __NAMESPACE__ . '\post_type_defaults', 1,
  * @param string $taxonomy
  * @return array
  */
-function taxonomy_defaults( array $args, $taxonomy ) {
+function taxonomy_defaults( array $args, string $taxonomy ) : array {
     if ( $taxonomy == 'post_tag' ) {
         $args['show_in_nav_menus'] = false;
     }
@@ -73,7 +73,7 @@ add_action( 'admin_bar_init', __NAMESPACE__ . '\remove_admin_bar_bump_cb', 1 );
 /**
  * @return string
  */
-function excerpt_more() {
+function excerpt_more() : string {
     return '&hellip;';
 }
 
@@ -83,7 +83,7 @@ add_filter( 'excerpt_more', __NAMESPACE__ . '\excerpt_more', 1 );
  * @param array $classes
  * @return array
  */
-function disable_login_page_default_ui( array $classes ) {
+function disable_login_page_default_ui( array $classes ) : array {
     if ( false !== ( $key = array_search( 'wp-core-ui', $classes ) ) ) {
         unset( $classes[ $key ] );
     }
@@ -131,7 +131,7 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\remove_headers', 1 );
  * @param array $settings
  * @return array
  */
-function tiny_mce_settings( array $settings ) {
+function tiny_mce_settings( array $settings ) : array {
     $settings['block_formats'] = 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6';
 
     return $settings;
@@ -148,7 +148,7 @@ add_action( 'wp_head', __NAMESPACE__ . '\check_browser_js_support', 1 );
 /**
  * @return string
  */
-function login_header_url() {
+function login_header_url() : string {
     return home_url( '/' );
 }
 
@@ -157,7 +157,7 @@ add_filter( 'login_headerurl', __NAMESPACE__ . '\login_header_url' );
 /**
  * @return string
  */
-function login_header_text() {
+function login_header_text() : string {
     return get_bloginfo( 'name' );
 }
 
@@ -185,41 +185,29 @@ function enqueue_block_editor_assets() {
     /**
      * Use another filter instead of "allowed_block_types" because it gives possibility to add own blocks w/o need to add them to filter.
      */
-    $allowed_block_types = apply_filters( 'innocode_normalize_allowed_block_types', [
-        'core/paragraph',
-        'core/image',
-        'core/heading',
-        'core/list',
-        'core/quote',
-        'core/shortcode',
-        'core/button',
-        'core/buttons',
-        'core/columns',
-        'core/column',
-        'core/embed',
-        'core/file',
-        'core/group',
-        'core/media-text',
-        'core/missing',
-        'core/more',
-        'core/preformatted',
-        'core/pullquote',
-        'core/separator',
-        'core/block',
-        'core/social-links',
-        'core/social-link',
-        'core/spacer',
-        'core/subhead',
-        'core/table',
-        'core/text-columns',
-        'core/video',
+    $disallowed_block_types = apply_filters( 'innocode_normalize_disallowed_block_types', [
+        'core/gallery',
+        'core/archives',
+        'core/audio',
+        'core/calendar',
+        'core/categories',
+        'core/code',
+        'core/cover',
+        'core/freeform',
+        'core/html',
+        'core/latest-posts',
+        'core/nextpage',
+        'core/rss',
+        'core/search',
+        'core/tag-cloud',
+        'core/verse',
     ] );
 
     wp_add_inline_script(
         'innocode-normalize-blocks',
         sprintf(
-            'var innocodeNormalizeAllowedBlockTypes = %s;',
-            json_encode( $allowed_block_types )
+            'var innocodeNormalizeDisallowedBlockTypes = %s;',
+            json_encode( $disallowed_block_types )
         ),
         'before'
     );

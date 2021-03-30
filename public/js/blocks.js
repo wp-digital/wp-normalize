@@ -1,4 +1,4 @@
-(function (allowedBlockTypes, allowedEmbedBlockVariations) {
+(function (disallowedBlockTypes, allowedEmbedBlockVariations) {
 
     'use strict';
 
@@ -7,7 +7,7 @@
 
         if (Array.isArray(blockTypes)) {
             blockTypes.filter(function (blockType) {
-                return allowedBlockTypes.indexOf(blockType.name) === -1;
+                return disallowedBlockTypes.indexOf(blockType.name) !== -1;
             }).forEach(function (blockType) {
                 wp.blocks.unregisterBlockType(blockType.name);
             });
@@ -23,4 +23,4 @@
             });
         }
     });
-})(window.innocodeNormalizeAllowedBlockTypes, window.innocodeNormalizeAllowedEmbedBlockVariations);
+})(window.innocodeNormalizeDisallowedBlockTypes, window.innocodeNormalizeAllowedEmbedBlockVariations);
