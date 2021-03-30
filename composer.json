@@ -4,6 +4,7 @@
   "type": "wordpress-muplugin",
   "license": "GPL-2.0+",
   "require": {
+    "php": ">=7.1",
     "ext-json": "*",
     "composer/installers": "~1.0"
   },
