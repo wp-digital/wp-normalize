@@ -1,6 +1,6 @@
 {
   "name": "wp-normalize",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "description": "Disables probably unnecessary WordPress features, and a little changes behaviour.",
   "scripts": {
     "build": "uglifyjs ./public/js/blocks.js -c -o ./public/js/blocks.min.js",
