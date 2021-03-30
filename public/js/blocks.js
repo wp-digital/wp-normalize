@@ -1,20 +1,26 @@
-(function () {
+(function (allowedBlockTypes, allowedEmbedBlockVariations) {
 
     'use strict';
 
     window._wpLoadBlockEditor.then(function () {
-        var embedVariations = wp.blocks.getBlockVariations('core/embed');
+        var blockTypes = wp.blocks.getBlockTypes();
 
-        if (!Array.isArray(embedVariations)) {
-            return;
+        if (Array.isArray(blockTypes)) {
+            blockTypes.filter(function (blockType) {
+                return allowedBlockTypes.indexOf(blockType.name) === -1;
+            }).forEach(function (blockType) {
+                wp.blocks.unregisterBlockType(blockType.name);
+            });
         }
 
-        embedVariations.forEach(function (variation) {
-            if (innocodeNormalizeAllowedEmbedBlockVariations.indexOf(variation.name) !== -1) {
-                return;
-            }
+        var embedVariations = wp.blocks.getBlockVariations('core/embed');
 
-            wp.blocks.unregisterBlockVariation('core/embed', variation.name);
-        });
+        if (Array.isArray(embedVariations)) {
+            embedVariations.filter(function (variation) {
+                return allowedEmbedBlockVariations.indexOf(variation.name) === -1;
+            }).forEach(function (variation) {
+                wp.blocks.unregisterBlockVariation('core/embed', variation.name);
+            });
+        }
     });
-})();
+})(window.innocodeNormalizeAllowedBlockTypes, window.innocodeNormalizeAllowedEmbedBlockVariations);

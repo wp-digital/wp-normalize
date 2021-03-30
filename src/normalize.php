@@ -163,11 +163,29 @@ function login_header_text() {
 
 add_filter( 'login_headertext', __NAMESPACE__ . '\login_header_text' );
 
-/**
- * @return string[]
- */
-function allowed_block_types() {
-    return [
+function enqueue_block_editor_assets() {
+    // Domain mapping processes mu-plugins directory wrong.
+    $has_domain_mapping = remove_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
+
+    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+    $script_url = plugins_url( "public/js/blocks$suffix.js", INNOCODE_NORMALIZE_FILE );
+
+    if ( $has_domain_mapping ) {
+        add_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
+    }
+
+    wp_enqueue_script(
+        'innocode-normalize-blocks',
+        $script_url,
+        [ 'wp-edit-post' ],
+        INNOCODE_NORMALIZE_VERSION,
+        true
+    );
+
+    /**
+     * Use another filter instead of "allowed_block_types" because it gives possibility to add own blocks w/o need to add them to filter.
+     */
+    $allowed_block_types = apply_filters( 'innocode_normalize_allowed_block_types', [
         'core/paragraph',
         'core/image',
         'core/heading',
@@ -195,28 +213,15 @@ function allowed_block_types() {
         'core/table',
         'core/text-columns',
         'core/video',
-    ];
-}
+    ] );
 
-add_filter( 'allowed_block_types', __NAMESPACE__ . '\allowed_block_types' );
-
-function enqueue_block_editor_assets() {
-    // Domain mapping processes mu-plugins directory wrong.
-    $has_domain_mapping = remove_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
-
-    $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-    $script_url = plugins_url( "public/js/blocks$suffix.js", INNOCODE_NORMALIZE_FILE );
-
-    if ( $has_domain_mapping ) {
-        add_filter( 'plugins_url', 'domain_mapping_plugins_uri', 1 );
-    }
-
-    wp_enqueue_script(
+    wp_add_inline_script(
         'innocode-normalize-blocks',
-        $script_url,
-        [ 'wp-edit-post' ],
-        INNOCODE_NORMALIZE_VERSION,
-        true
+        sprintf(
+            'var innocodeNormalizeAllowedBlockTypes = %s;',
+            json_encode( $allowed_block_types )
+        ),
+        'before'
     );
 
     $allowed_embed_variations = apply_filters( 'innocode_normalize_allowed_embed_block_variations', [
